@@ -1,15 +1,17 @@
-
 presets:
-  - x264-fast
+  - x264-fast-crf
+  - x264-lossless
 
-x264-fast:
-
+x264-fast-crf:
+  codec: "libx264"
+  preset: null
   parameters:
+    name: "x264-params"
 
     calculated:
-      - keyint: "{{FRAMERATE}} * 5"
-      - rc-lookahead: "{{FRAMERATE}} * 2"
-      - min-keyint: "{{keyint}} // 2" 
+      keyint: "framerate * 5"
+      rc-lookahead: "framerate * 2"
+      min-keyint: "keyint // 2"
 
     constants:
       - me: umh
@@ -18,10 +20,27 @@ x264-fast:
       - no-chroma-me: 1
       - bframes: 6
       - ref: 3
-      - scenecut: 33
       - crf: 17
+      - scenecut: 33
       - qpmax: 22
       - aq-mode: 3
       - aq-strength: 0.8
       - deblock: "1,0"
-      - psr-rd: "0.7,0.3"
+      - psy-rd: "0.7,0.3"
+
+x264-lossless:
+  codec: "libx264"
+  preset: null
+  parameters:
+    name: "x264-params"
+
+    calculated:
+      keyint: "framerate * 4"
+      min-keyint: "keyint"
+
+    constants:
+      - bframes: 6
+      - ref: 3
+      - qpmax: 22
+      - qp: 0
+      - chroma-qp-offset: 3
