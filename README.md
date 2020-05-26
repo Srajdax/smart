@@ -1,6 +1,8 @@
 # SMART
 
-This project centralize all the video encoding script I use with FFMPEG. It uses :
+This respository centralizes all the video encoding script I use with FFMPEG. 
 
-- ffmpeg
-- python-ffmpeg
+I mainly use this script to encode my video/movies.
+
+- ffmpeg (https://ffmpeg.org)
+- python-ffmpeg (https://github.com/kkroening/ffmpeg-python)

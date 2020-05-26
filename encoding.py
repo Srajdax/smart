@@ -61,7 +61,7 @@ def buildEncoder(codec, preset, paramsName, params):
     return d
 
 
-with open("parameters.yaml", 'r') as stream:
+with open("configuration.yaml", 'r') as stream:
     try:
         parameters = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
