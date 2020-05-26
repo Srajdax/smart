@@ -22,6 +22,7 @@ TODO
 
 ## Test Environment
 
+- Python 3.8.2
 - macOS Catalina 10.15.4 / AMD Radeon 5500m / Intel i9 
 - ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
   built with Apple clang version 11.0.0 (clang-1100.0.33.8)
