@@ -1,6 +1,22 @@
-presets:
+global-presets:
+  - copy:
+      video-preset: copy
+      audio-preset: copy
+  - lossless:
+      video-preset: x264-lossless
+      audio-preset: copy
+
+video-presets:
+  - copy
   - x264-fast-crf
   - x264-lossless
+
+audio-presets:
+  - copy
+  - aac-128
+  - aac-256
+  - aac-320
+  - flac
 
 x264-fast-crf:
   codec: "libx264"

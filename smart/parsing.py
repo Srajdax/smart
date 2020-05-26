@@ -48,3 +48,20 @@ def buildEncoder(codec, preset, paramsName, params):
 
     d.update({paramsName: params})
     return d
+
+def listPresets(configurations):
+    
+    print('---\nGLOBAL PRESETS\n')
+    for preset in configurations['global-presets']:
+        for (preset_name, preset_detail) in preset.items():
+            print("Preset : " + preset_name)
+            print("\tVideo preset : " + preset_detail['video-preset'])
+            print("\tAudio preset : " + preset_detail['audio-preset'])
+
+    print('\n---\nVIDEO PRESETS\n')
+    for preset in configurations['video-presets']:
+        print("\t- " + preset)
+
+    print('\n---\nAUDIO PRESETS\n')
+    for preset in configurations['audio-presets']:
+        print("\t- " + preset)
