@@ -1,0 +1,27 @@
+
+presets:
+  - x264-fast
+
+x264-fast:
+
+  parameters:
+
+    calculated:
+      - keyint: "{{FRAMERATE}} * 5"
+      - rc-lookahead: "{{FRAMERATE}} * 2"
+      - min-keyint: "{{keyint}} // 2" 
+
+    constants:
+      - me: umh
+      - subme: 8
+      - merange: 16
+      - no-chroma-me: 1
+      - bframes: 6
+      - ref: 3
+      - scenecut: 33
+      - crf: 17
+      - qpmax: 22
+      - aq-mode: 3
+      - aq-strength: 0.8
+      - deblock: "1,0"
+      - psr-rd: "0.7,0.3"
