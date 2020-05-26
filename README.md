@@ -11,7 +11,7 @@ SMART is a small script to enhance my productivity in encoding videos, it provid
 
 ## Usage
 
-TODO
+TODO 
 
 ## Current limitations
 
