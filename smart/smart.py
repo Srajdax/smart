@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser(
 # input file
 # configuration file
 # list preset
-# resize
+# resize option
 
 # Definig the arguments
 parser.add_argument(
@@ -35,6 +35,8 @@ parser.add_argument("-vp", "--video-preset",
                     help="Select a video preset, default is 'x264-fast-crf'", required=False)
 parser.add_argument("-ap", "--audio-preset",
                     help="Select an audio preset, default is 'aac-256'", required=False)
+parser.add_argument("-r", "--resize",
+                    help="Provide a list to resize the video and output it in multiple size, e.g: 1920x1080, 1280x720", required=False, nargs='+')
 parser.add_argument("-m", "--mux",
                     help="Select container for the encoded file (available: mp4, mov, mkv), default is 'mp4'", required=False)
 parser.add_argument(
