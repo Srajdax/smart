@@ -6,57 +6,78 @@ global-presets:
       video-preset: x264-lossless
       audio-preset: copy
 
-video-presets:
-  - copy
-  - x264-fast-crf
-  - x264-lossless
+video:
+  x264-fast-crf:
+    codec: "libx264"
+    preset: null
+    parameters:
+      name: "x264-params"
 
-audio-presets:
-  - copy
-  - aac-128
-  - aac-256
-  - aac-320
-  - flac
+      calculated:
+        keyint: "framerate * 5"
+        rc-lookahead: "framerate * 2"
+        min-keyint: "keyint // 2"
 
-x264-fast-crf:
-  codec: "libx264"
-  preset: null
-  parameters:
-    name: "x264-params"
+      constants:
+        - me: umh
+        - subme: 8
+        - merange: 16
+        - no-chroma-me: 1
+        - bframes: 6
+        - ref: 3
+        - crf: 17
+        - scenecut: 33
+        - qpmax: 22
+        - aq-mode: 3
+        - aq-strength: 0.8
+        - deblock: "1,0"
+        - psy-rd: "0.7,0.3"
 
-    calculated:
-      keyint: "framerate * 5"
-      rc-lookahead: "framerate * 2"
-      min-keyint: "keyint // 2"
+  x264-lossless:
+    codec: "libx264"
+    preset: null
+    parameters:
+      name: "x264-params"
 
-    constants:
-      - me: umh
-      - subme: 8
-      - merange: 16
-      - no-chroma-me: 1
-      - bframes: 6
-      - ref: 3
-      - crf: 17
-      - scenecut: 33
-      - qpmax: 22
-      - aq-mode: 3
-      - aq-strength: 0.8
-      - deblock: "1,0"
-      - psy-rd: "0.7,0.3"
+      calculated:
+        keyint: "framerate * 4"
+        min-keyint: "keyint"
 
-x264-lossless:
-  codec: "libx264"
-  preset: null
-  parameters:
-    name: "x264-params"
+      constants:
+        - bframes: 6
+        - ref: 3
+        - qpmax: 22
+        - qp: 0
+        - chroma-qp-offset: 3
 
-    calculated:
-      keyint: "framerate * 4"
-      min-keyint: "keyint"
+  copy:
+    codec: copy
+    parameters: null
 
-    constants:
-      - bframes: 6
-      - ref: 3
-      - qpmax: 22
-      - qp: 0
-      - chroma-qp-offset: 3
+audio:
+  aac-128:
+    codec: aac
+    parameters:
+      bitrate: 128
+
+  aac-256:
+    codec: aac
+    parameters:
+      bitrate: 256
+
+  aac-320:
+    codec: aac
+    parameters:
+      bitrate: 320
+
+  flac:
+    codec: flac
+    parameters: null
+
+  pcm32:
+    codec: pcm_s32le
+    parameters: null
+
+  copy:
+    codec: copy
+    parameters: null

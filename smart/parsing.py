@@ -49,6 +49,32 @@ def buildEncoder(codec, preset, paramsName, params):
     d.update({paramsName: params})
     return d
 
+def buildChromaSubsampling(bit_depth, encoder):
+
+    def parseYUV(yuv):
+
+        if yuv == '420':
+            return 'yuv420p'
+        elif yuv == '422':
+            return 'yuv422p'
+        elif yuv == '444':
+            return 'yuv444p'
+        else:
+            return 'yuv420p'
+    
+    def parseBitDepth(bit_depth):
+
+        if bit_depth == '8':
+            return ''
+        elif bit_depth == '10':
+            return '10le'
+
+    yuv, bit_depth = bit_depth.split('-')
+    bit_depth = '{}{}'.format(parseYUV(yuv), parseBitDepth(bit_depth))
+
+    encoder['pix_fmt'] = bit_depth
+    return encoder
+
 def listPresets(configurations):
     
     print('---\nGLOBAL PRESETS\n')
@@ -59,9 +85,9 @@ def listPresets(configurations):
             print("\tAudio preset : " + preset_detail['audio-preset'])
 
     print('\n---\nVIDEO PRESETS\n')
-    for preset in configurations['video-presets']:
+    for preset in configurations['video']:
         print("\t- " + preset)
 
     print('\n---\nAUDIO PRESETS\n')
-    for preset in configurations['audio-presets']:
+    for preset in configurations['audio']:
         print("\t- " + preset)

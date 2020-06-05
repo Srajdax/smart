@@ -1,4 +1,4 @@
-# SMART
+# SMART version 0.2
 
 > *Project unstable*, work still on progress
 
@@ -11,7 +11,34 @@ SMART is a small script to enhance my productivity in encoding videos, it provid
 
 ## Usage
 
-TODO 
+```
+usage: smart.py [-h] -i INPUT [-l] [-c CONFIG] [-p PRESET] [-v VIDEO] [-a AUDIO] [-yuv CHROMA_SUBSAMPLING] [-r RESIZE [RESIZE ...]]
+                [-m MUX] [-o OUTPUT]
+
+SMART - a simple script to ease and automate video encoding
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        The input file to be encoded
+  -l, --list-preset     List all the presets available
+  -c CONFIG, --config CONFIG
+                        The .yaml configuration file for the presets, default file 'configuration.yaml' in the current directory
+  -p PRESET, --preset PRESET
+                        Select a global preset
+  -v VIDEO, --video VIDEO
+                        Select a video preset, default is 'x264-fast-crf'
+  -a AUDIO, --audio AUDIO
+                        Select an audio preset, default is 'aac-256'
+  -yuv CHROMA_SUBSAMPLING, --chroma-subsampling CHROMA_SUBSAMPLING
+                        Select the chroma subsampling and the bit depth, supports [420-8, 420-10, 422-8, 422-10, 444-8, 444-10], default is
+                        '420-8'
+  -r RESIZE [RESIZE ...], --resize RESIZE [RESIZE ...]
+                        Provide a list to resize the video and output it in multiple size, e.g: 1920x1080, 1280x720
+  -m MUX, --mux MUX     Select container for the encoded file (available: mp4, mov, mkv), default is 'mp4'
+  -o OUTPUT, --output OUTPUT
+                        The output name of the encoded file, default name 'output'
+```
 
 ## Current limitations
 
