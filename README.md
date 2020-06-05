@@ -1,5 +1,7 @@
 # SMART version 0.2
 
+[CHANGELOG](CHANGELOG)
+
 > *Project unstable*, work still on progress
 
 SMART is a small script to enhance my productivity in encoding videos, it provides presets for encoding video/movies.
