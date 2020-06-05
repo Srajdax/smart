@@ -1,6 +1,6 @@
 # SMART version 0.2
 
-[CHANGELOG](CHANGELOG)
+[CHANGELOG](CHANGELOG.md)
 
 > *Project unstable*, work still on progress
 
