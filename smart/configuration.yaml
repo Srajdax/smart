@@ -50,6 +50,31 @@ video:
         - qp: 0
         - chroma-qp-offset: 3
 
+  x265-fast-crf:
+    codec: "libx265"
+    preset: medium
+    parameters:
+      name: "x265-params"
+
+      calculated:
+        keyint: "framerate * 4"
+        min-keyint: "keyint"
+
+      constants:
+        - bframes: 4
+        - crf: 17
+
+  x265-slow-crf:
+    codec: "libx265"
+    preset: slow
+    parameters:
+      name: "x265-params"
+
+      calculated: null
+
+      constants:
+        - crf: 18
+
   copy:
     codec: copy
     parameters: null
@@ -58,17 +83,17 @@ audio:
   aac-128:
     codec: aac
     parameters:
-      bitrate: 128
+      "b:a": 128k
 
   aac-256:
     codec: aac
     parameters:
-      bitrate: 256
+      "b:a": 256k
 
   aac-320:
     codec: aac
     parameters:
-      bitrate: 320
+      "b:a": 320k
 
   flac:
     codec: flac

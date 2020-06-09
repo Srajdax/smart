@@ -1,22 +1,23 @@
+import math
 
 
-def parseCalculated(calculated, **injected):
+def parseVideoCalculated(calculated, **injected):
 
     parameters = {}
+    if calculated:
+        for (key, value) in calculated.items():
+            calculate = value
+            for (k, v) in injected.items():
+                calculate = calculate.replace(k, str(v))
+            injected.update({key: eval(calculate)})
 
-    for (key, value) in calculated.items():
-        calculate = value
-        for (k, v) in injected.items():
-            calculate = calculate.replace(k, str(v))
-        injected.update({key: eval(calculate)})
-
-    for key in calculated.keys():
-        parameters.update({key: injected[key]})
+        for key in calculated.keys():
+            parameters.update({key: injected[key]})
 
     return parameters
 
 
-def parseConstant(constant):
+def parseVideoConstant(constant):
 
     d = {}
     for i in constant:
@@ -24,7 +25,7 @@ def parseConstant(constant):
     return d
 
 
-def buildEncoderParams(listOfDict):
+def buildVideoEncoderParams(listOfDict):
 
     parameters = dict()
     for k in listOfDict:
@@ -38,7 +39,7 @@ def buildEncoderParams(listOfDict):
     return encoderParams.strip(':')
 
 
-def buildEncoder(codec, preset, paramsName, params):
+def buildVideoEncoder(codec, preset, paramsName, params):
 
     d = {}
     d.update({'c:v': codec})
@@ -49,7 +50,8 @@ def buildEncoder(codec, preset, paramsName, params):
     d.update({paramsName: params})
     return d
 
-def buildChromaSubsampling(bit_depth, encoder):
+
+def buildVideoChromaSubsampling(bit_depth, encoder):
 
     def parseYUV(yuv):
 
@@ -61,7 +63,7 @@ def buildChromaSubsampling(bit_depth, encoder):
             return 'yuv444p'
         else:
             return 'yuv420p'
-    
+
     def parseBitDepth(bit_depth):
 
         if bit_depth == '8':
@@ -75,8 +77,42 @@ def buildChromaSubsampling(bit_depth, encoder):
     encoder['pix_fmt'] = bit_depth
     return encoder
 
+
+def buildAudioEncoderParams(params):
+
+    if params != None:
+        return params
+    else:
+        return {}
+
+
+def buildAudioEncoder(codec, params):
+    d = {}
+    d.update({'c:a': codec})
+
+    for k, v in params.items():
+        d.update({k: v})
+
+    return d
+
+
+def buildEncoder(videoEncoder, audioEncoder):
+
+    return {**videoEncoder, **audioEncoder}
+
+
+def parseResize(size, width, height):
+
+    calculated = False
+    if size != 'native':
+        calculated = math.ceil((width / height) * int(size))
+        return {'width': calculated, 'height': int(size)}
+
+    return calculated
+
+
 def listPresets(configurations):
-    
+
     print('---\nGLOBAL PRESETS\n')
     for preset in configurations['global-presets']:
         for (preset_name, preset_detail) in preset.items():

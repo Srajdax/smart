@@ -9,17 +9,13 @@ CONFIGURATION_FILE = "configuration.yaml"
 OUTPUT = "output"
 MUX = "mp4"
 YUV = '420-8'
+VIDEO = 'x264-fast-crf'
+AUDIO = 'aac-256'
 
 parser = argparse.ArgumentParser(
     description="SMART - a simple script to ease and automate video encoding")
 
-# preset total
-# preset video
-# preset audio
-# conteneur
-# output file
-# input file
-# configuration file
+# total preset
 # list preset
 # resize option
 
@@ -39,7 +35,7 @@ parser.add_argument("-a", "--audio",
 parser.add_argument("-yuv", "--chroma-subsampling",
                     help="Select the chroma subsampling and the bit depth, supports [420-8, 420-10, 422-8, 422-10, 444-8, 444-10], default is '420-8'", choices=["420-8", "420-10", "422-8", "422-10", "444-8", "444-10"], type=str, required=False)
 parser.add_argument("-r", "--resize",
-                    help="Provide a list to resize the video and output it in multiple size, e.g: 1920x1080, 1280x720", required=False, nargs='+')
+                    help="Provide a list to resize the video and output it in multiple size", required=False, nargs='+', type=str, choices=['360', '480', '720', '1080', '2160', 'native'])
 parser.add_argument("-m", "--mux",
                     help="Select container for the encoded file (available: mp4, mov, mkv), default is 'mp4'", choices=["mp4", "mkv", "mov"], required=False)
 parser.add_argument(
@@ -68,37 +64,68 @@ if args.mux:
 if args.output:
     OUTPUT = args.output
 
-OUTPUT += '.{}'.format(MUX)
+if args.video:
+    VIDEO = args.video
 
-encoding = parameters['video']['x264-lossless']
+if args.audio:
+    AUDIO = args.audio
+
+OUT = OUTPUT + '.{}'.format(MUX)
+
+encoding = parameters['video'][VIDEO]
 
 probe = ffmpeg.probe("introduction.mov")
 video_stream = next(
     (stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 framerate = int(video_stream['avg_frame_rate'].split('/')[0])
+video_width, video_height = int(
+    video_stream['width']), int(video_stream['height'])
 
 # Build Video Parameters
 injected = {'framerate': framerate}
-calculated = parsing.parseCalculated(
-    encoding['parameters']['calculated'], **injected)
-constants = parsing.parseConstant(encoding['parameters']['constants'])
-params = parsing.buildEncoderParams([calculated, constants])
-encoder = parsing.buildEncoder(
+calculated = parsing.parseVideoCalculated(
+    encoding['parameters'].get('calculated', None), **injected)
+constants = parsing.parseVideoConstant(encoding['parameters']['constants'])
+params = parsing.buildVideoEncoderParams([calculated, constants])
+encoder = parsing.buildVideoEncoder(
     encoding['codec'], encoding['preset'], encoding['parameters']['name'], params)
-encoder = parsing.buildChromaSubsampling(YUV, encoder)
+videoEncoder = parsing.buildVideoChromaSubsampling(YUV, encoder)
 
 # Build Audio Parameters
+encoding = parameters['audio'][AUDIO]
+params = parsing.buildAudioEncoderParams(encoding['parameters'])
+audioEncoder = parsing.buildAudioEncoder(encoding['codec'], params)
 
+# Build Encoder
+encoder = parsing.buildEncoder(videoEncoder, audioEncoder)
 
-# -c:a aac -b:a 160k output.m4a
-# -c:a flac
-# -c:a pcm_s32le
+if args.resize:
+    for size in args.resize:
+        print(encoder)
+        OUT = '{}-{}.{}'.format(OUTPUT, size, MUX)
+        print(OUT)
+        size = parsing.parseResize(size, video_width, video_height)
+        print(size)
 
-print(encoder)
+        if size:
+            video = ffmpeg.input(args.input).video
+            audio = ffmpeg.input(args.input).audio
+            video = video.filter('scale', size['width'], size['height'])
+            joined = ffmpeg.concat(video, audio, v=1, a=1)
+            stream = joined.output(OUT, **encoder)
+            stream.run()
+        else:
+            (
+                ffmpeg
+                .input(args.input)
+                .output(OUT, **encoder)
+                .run()
+            )
+    sys.exit(0)
 
 (
     ffmpeg
     .input(args.input)
-    .output(OUTPUT, **encoder)
+    .output(OUT, **encoder)
     .run()
 )
