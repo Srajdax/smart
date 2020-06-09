@@ -1,4 +1,4 @@
-# SMART version 0.2
+# SMART version 0.3
 
 [CHANGELOG](CHANGELOG.md)
 
