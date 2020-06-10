@@ -79,6 +79,8 @@ video:
         - colorprim: bt709
         - range: limited
 
+  # https://www.voukoder.org/forum/thread/609-x265-difficult-settings-common-and-slow/?l=2
+  # Thanks to iAvoe for the presets
   x265-slow-crf-sdr-bd:
     codec: "libx265"
     preset: slow
