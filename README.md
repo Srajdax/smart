@@ -53,7 +53,7 @@ optional arguments:
 ## Test Environment
 
 - Python 3.8.2
-- macOS Catalina 10.15.4 / AMD Radeon 5500m / Intel i9 
+- macOS Catalina 10.15.5 / AMD Radeon 5500m / Intel i9 
 - ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
   built with Apple clang version 11.0.0 (clang-1100.0.33.8)
   configuration: --enable-gpl --enable-version3 --enable-sdl2 --enable-fontconfig --enable-gnutls --enable-iconv --enable-libass --enable-libdav1d --enable-libbluray --enable-libfreetype --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libopus --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libtheora --enable-libtwolame --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libzimg --enable-lzma --enable-zlib --enable-gmp --enable-libvidstab --enable-libvorbis --enable-libvo-amrwbenc --enable-libmysofa --enable-libspeex --enable-libxvid --enable-libaom --enable-appkit --enable-avfoundation --enable-coreimage --enable-audiotoolbox

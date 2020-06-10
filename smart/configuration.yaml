@@ -64,7 +64,7 @@ video:
         - bframes: 4
         - crf: 17
 
-  x265-slow-crf:
+  x265-slow-crf-sdr:
     codec: "libx265"
     preset: slow
     parameters:
@@ -73,7 +73,59 @@ video:
       calculated: null
 
       constants:
+        - crf: 23
+        - colormatrix: bt709
+        - transfer: bt709
+        - colorprim: bt709
+        - range: limited
+
+  x265-slow-crf-sdr-bd:
+    codec: "libx265"
+    preset: slow
+    parameters:
+      name: "x265-params"
+
+      calculated:
+        ctu: "64"
+        subme: "5"
+        merange: "ctu - 4 - subme"
+        rc-lookahead: "framerate * 4"
+
+      constants:
+        - limit-tu: 1
         - crf: 18
+        - crqpoffs: -3
+        - cbqpoffs: -1
+        - colormatrix: bt709
+        - transfer: bt709
+        - colorprim: bt709
+        - range: limited
+        - me: star
+        - analyze-src-pics: 1
+        - max-merge: 4
+        - early-skip: 1
+        - no-open-gop: 1
+        - min-keyint: 1
+        - ref: 3
+        - fades: 1
+        - bframes: 16
+        - b-adapt: 2
+        - no-strong-intra-smoothing: 1
+        - frame-dup: 1
+        - dup-threshold: 70
+        - scenecut-aware-qp: 1
+        - scenecut-window: 650
+        - max-qp-delta: 6
+        - rdoq-level: 2
+        - aq-mode: 1
+        - aq-strength: 1
+        - qg-size: 16
+        - rd: 5
+        - limit-modes: 1
+        - limit-refs: 3
+        - rect: 1
+        - rskip: 1
+        - psy-rd: 1.6
 
   copy:
     codec: copy

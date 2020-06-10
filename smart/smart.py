@@ -98,6 +98,7 @@ audioEncoder = parsing.buildAudioEncoder(encoding['codec'], params)
 
 # Build Encoder
 encoder = parsing.buildEncoder(videoEncoder, audioEncoder)
+print(encoder)
 
 if args.resize:
     for size in args.resize:

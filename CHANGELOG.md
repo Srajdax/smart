@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 10/06/2020 - Version 0.3a
+
+* Update configuration.yaml: Add HEVC preset BD
+
 ## 10/06/2020 - Version 0.3
 
 * Update configuration.yaml: Add HEVC preset
