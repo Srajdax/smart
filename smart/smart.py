@@ -10,7 +10,7 @@ OUTPUT = "output"
 MUX = "mp4"
 YUV = '420-8'
 VIDEO = 'x264-fast-crf'
-AUDIO = 'aac-256'
+AUDIO = 'aac256'
 
 parser = argparse.ArgumentParser(
     description="SMART - a simple script to ease and automate video encoding")

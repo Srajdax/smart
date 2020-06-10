@@ -2,6 +2,7 @@
 
 ## 10/06/2020 - Version 0.3a
 
+* Add audio OPUS
 * Update configuration.yaml: Add HEVC preset BD
 
 ## 10/06/2020 - Version 0.3

@@ -132,3 +132,6 @@ dmypy.json
 # MP4 Files
 *.mp4
 *.mov
+*.wav
+*.mp3
+*.opus

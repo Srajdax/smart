@@ -134,17 +134,17 @@ video:
     parameters: null
 
 audio:
-  aac-128:
+  aac128:
     codec: aac
     parameters:
       "b:a": 128k
 
-  aac-256:
+  aac256:
     codec: aac
     parameters:
       "b:a": 256k
 
-  aac-320:
+  aac320:
     codec: aac
     parameters:
       "b:a": 320k
@@ -156,6 +156,22 @@ audio:
   pcm32:
     codec: pcm_s32le
     parameters: null
+
+  opus32:
+    codec: libopus
+    parameters:
+      "b:a": 32k
+
+  opus96:
+    codec: libopus
+    parameters:
+      "b:a": 96k
+
+  opus256:
+    codec: libopus
+    parameters:
+      "b:a": 256k
+
 
   copy:
     codec: copy
