@@ -1,10 +1,18 @@
 # SMART version 0.3
 
+SMART is a small script to enhance my productivity in encoding videos, it provides presets for encoding video/movies.
+
 [CHANGELOG](CHANGELOG.md)
+
+- [SMART version 0.3](#smart-version-03)
+  - [Requirements](#requirements)
+  - [Usage](#usage)
+  - [Current limitations](#current-limitations)
+  - [Test Environment](#test-environment)
+
 
 > *Project unstable*, work still on progress
 
-SMART is a small script to enhance my productivity in encoding videos, it provides presets for encoding video/movies.
 
 ## Requirements
 
