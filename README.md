@@ -2,6 +2,8 @@
 
 SMART is a small script to enhance my productivity in encoding videos, it provides presets for encoding video/movies.
 
+I'm currently moving this project to an HTTP Encoding Server using Quart and Docker
+
 [CHANGELOG](CHANGELOG.md)
 
 - [SMART version 0.3](#smart-version-03)
