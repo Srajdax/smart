@@ -2,17 +2,16 @@
 
 SMART is a tool to enhance my productivity in encoding videos, it provides presets for encoding video/movies.
 
-> I'm currently moving this project to an HTTP Encoding Server using Quart and Docker, **Work still on-going**
+> I'm currently moving this project to an HTTP Encoding Server using Quart, VueJS and Docker, **Work still on-going**
 
 [CHANGELOG](CHANGELOG.md)
 
-- [SMART version 0.4](#smart-version-04)
-  - [Requirements](#requirements)
-  - [Usage](#usage)
-    - [Command Line Interface (CLI)](#command-line-interface-cli)
-    - [HTTP Server](#http-server)
-  - [Current limitations](#current-limitations)
-  - [Test Environment](#test-environment)
+- [Requirements](#requirements)
+- [Usage](#usage)
+  - [Command Line Interface (CLI)](#command-line-interface-cli)
+  - [HTTP Server](#http-server)
+- [Current limitations](#current-limitations)
+- [Test Environment](#test-environment)
 
 
 ## Requirements
