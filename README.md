@@ -1,27 +1,29 @@
-# SMART version 0.3
+# SMART version 0.4
 
-SMART is a small script to enhance my productivity in encoding videos, it provides presets for encoding video/movies.
+SMART is a tool to enhance my productivity in encoding videos, it provides presets for encoding video/movies.
 
-I'm currently moving this project to an HTTP Encoding Server using Quart and Docker
+> I'm currently moving this project to an HTTP Encoding Server using Quart and Docker, **Work still on-going**
 
 [CHANGELOG](CHANGELOG.md)
 
-- [SMART version 0.3](#smart-version-03)
+- [SMART version 0.4](#smart-version-04)
   - [Requirements](#requirements)
   - [Usage](#usage)
+    - [Command Line Interface (CLI)](#command-line-interface-cli)
+    - [HTTP Server](#http-server)
   - [Current limitations](#current-limitations)
   - [Test Environment](#test-environment)
-
-
-> *Project unstable*, work still on progress
 
 
 ## Requirements
 
 - ffmpeg and ffprobe (https://ffmpeg.org) installed and added to PATH
 - python depencies, can be installed using `pip install -r requirements.txt`
+- mongodb running if in server mode
 
 ## Usage
+
+### Command Line Interface (CLI)
 
 ```
 usage: smart.py [-h] -i INPUT [-l] [-c CONFIG] [-p PRESET] [-v VIDEO] [-a AUDIO] [-yuv {420-8,420-10,422-8,422-10,444-8,444-10}]
@@ -52,6 +54,12 @@ optional arguments:
   -o OUTPUT, --output OUTPUT
                         The output name of the encoded file, default name 'output'
 ```
+
+### HTTP Server
+
+1. Launch mongodb
+2. Launch the script in server mode, you need to add the argument `-s` or `--server` when launching. Default binding is `http://0.0.0.0:5000`
+
 
 ## Current limitations
 

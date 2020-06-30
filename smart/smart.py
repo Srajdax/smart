@@ -1,9 +1,13 @@
-import ffmpeg
-import yaml
-import re
-import sys
+
+from app import app
+from app.models import parsing
 import argparse
-import parsing
+import sys
+import re
+import yaml
+import ffmpeg
+
+PORT: int = 5000
 
 CONFIGURATION_FILE = "configuration.yaml"
 OUTPUT = "output"
@@ -13,15 +17,14 @@ VIDEO = 'x264-fast-crf'
 AUDIO = 'aac256'
 
 parser = argparse.ArgumentParser(
-    description="SMART - a simple script to ease and automate video encoding")
+    description="SMART - a simple tool to ease and automate video encoding")
 
-# total preset
-# list preset
-# resize option
 
 # Definig the arguments
 parser.add_argument(
-    "-i", "--input", help="The input file to be encoded", type=str, required=True)
+    "-s", "--server", help="Launch SMART as a server", action='store_true')
+parser.add_argument(
+    "-i", "--input", help="The input file to be encoded", type=str, required=('-s' or '--server') not in sys.argv)
 parser.add_argument("-l", "--list-preset",
                     help="List all the presets available", required=False, action="store_true")
 parser.add_argument(
@@ -42,91 +45,95 @@ parser.add_argument(
     "-o", "--output", help="The output name of the encoded file, default name 'output'", type=str, required=False)
 args = parser.parse_args()
 
-if args.config:
-    CONFIGURATION_FILE = args.config
+if args.server:
+    app.run(host='0.0.0.0', port=PORT, debug=True)
+else:
 
-with open(CONFIGURATION_FILE, 'r') as stream:
-    try:
-        parameters = yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        print(exc)
+    if args.config:
+        CONFIGURATION_FILE = args.config
 
-if args.chroma_subsampling:
-    YUV = args.chroma_subsampling
+    with open(CONFIGURATION_FILE, 'r') as stream:
+        try:
+            parameters = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
 
-if args.list_preset:
-    parsing.listPresets(parameters)
-    exit(0)
+    if args.chroma_subsampling:
+        YUV = args.chroma_subsampling
 
-if args.mux:
-    MUX = args.mux
+    if args.list_preset:
+        parsing.listPresets(parameters)
+        exit(0)
 
-if args.output:
-    OUTPUT = args.output
+    if args.mux:
+        MUX = args.mux
 
-if args.video:
-    VIDEO = args.video
+    if args.output:
+        OUTPUT = args.output
 
-if args.audio:
-    AUDIO = args.audio
+    if args.video:
+        VIDEO = args.video
 
-OUT = OUTPUT + '.{}'.format(MUX)
+    if args.audio:
+        AUDIO = args.audio
 
-encoding = parameters['video'][VIDEO]
+    OUT = OUTPUT + '.{}'.format(MUX)
 
-probe = ffmpeg.probe("introduction.mov")
-video_stream = next(
-    (stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
-framerate = int(video_stream['avg_frame_rate'].split('/')[0])
-video_width, video_height = int(
-    video_stream['width']), int(video_stream['height'])
+    encoding = parameters['video'][VIDEO]
 
-# Build Video Parameters
-injected = {'framerate': framerate}
-calculated = parsing.parseVideoCalculated(
-    encoding['parameters'].get('calculated', None), **injected)
-constants = parsing.parseVideoConstant(encoding['parameters']['constants'])
-params = parsing.buildVideoEncoderParams([calculated, constants])
-encoder = parsing.buildVideoEncoder(
-    encoding['codec'], encoding['preset'], encoding['parameters']['name'], params)
-videoEncoder = parsing.buildVideoChromaSubsampling(YUV, encoder)
+    probe = ffmpeg.probe("introduction.mov")
+    video_stream = next(
+        (stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+    framerate = int(video_stream['avg_frame_rate'].split('/')[0])
+    video_width, video_height = int(
+        video_stream['width']), int(video_stream['height'])
 
-# Build Audio Parameters
-encoding = parameters['audio'][AUDIO]
-params = parsing.buildAudioEncoderParams(encoding['parameters'])
-audioEncoder = parsing.buildAudioEncoder(encoding['codec'], params)
+    # Build Video Parameters
+    injected = {'framerate': framerate}
+    calculated = parsing.parseVideoCalculated(
+        encoding['parameters'].get('calculated', None), **injected)
+    constants = parsing.parseVideoConstant(encoding['parameters']['constants'])
+    params = parsing.buildVideoEncoderParams([calculated, constants])
+    encoder = parsing.buildVideoEncoder(
+        encoding['codec'], encoding['preset'], encoding['parameters']['name'], params)
+    videoEncoder = parsing.buildVideoChromaSubsampling(YUV, encoder)
 
-# Build Encoder
-encoder = parsing.buildEncoder(videoEncoder, audioEncoder)
-print(encoder)
+    # Build Audio Parameters
+    encoding = parameters['audio'][AUDIO]
+    params = parsing.buildAudioEncoderParams(encoding['parameters'])
+    audioEncoder = parsing.buildAudioEncoder(encoding['codec'], params)
 
-if args.resize:
-    for size in args.resize:
-        print(encoder)
-        OUT = '{}-{}.{}'.format(OUTPUT, size, MUX)
-        print(OUT)
-        size = parsing.parseResize(size, video_width, video_height)
-        print(size)
+    # Build Encoder
+    encoder = parsing.buildEncoder(videoEncoder, audioEncoder)
+    print(encoder)
 
-        if size:
-            video = ffmpeg.input(args.input).video
-            audio = ffmpeg.input(args.input).audio
-            video = video.filter('scale', size['width'], size['height'])
-            joined = ffmpeg.concat(video, audio, v=1, a=1)
-            stream = joined.output(OUT, **encoder)
-            stream.run()
-        else:
-            (
-                ffmpeg
-                .input(args.input)
-                .output(OUT, **encoder)
-                .run()
-            )
-    sys.exit(0)
+    if args.resize:
+        for size in args.resize:
+            print(encoder)
+            OUT = '{}-{}.{}'.format(OUTPUT, size, MUX)
+            print(OUT)
+            size = parsing.parseResize(size, video_width, video_height)
+            print(size)
 
-(
-    ffmpeg
-    .input(args.input)
-    .output(OUT, **encoder)
-    .run()
-)
+            if size:
+                video = ffmpeg.input(args.input).video
+                audio = ffmpeg.input(args.input).audio
+                video = video.filter('scale', size['width'], size['height'])
+                joined = ffmpeg.concat(video, audio, v=1, a=1)
+                stream = joined.output(OUT, **encoder)
+                stream.run()
+            else:
+                (
+                    ffmpeg
+                    .input(args.input)
+                    .output(OUT, **encoder)
+                    .run()
+                )
+        sys.exit(0)
+
+    (
+        ffmpeg
+        .input(args.input)
+        .output(OUT, **encoder)
+        .run()
+    )

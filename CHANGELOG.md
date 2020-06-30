@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 30/06/2020 - Version 0.4
+
+* Add HTTP Server version
+* Update requirements
+
 ## 10/06/2020 - Version 0.3a
 
 * Add audio OPUS
